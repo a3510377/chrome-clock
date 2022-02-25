@@ -3,10 +3,12 @@ import { ref, onBeforeUnmount } from "vue";
 
 import Time from "./components/time.vue";
 import Covid from "./components/covid.vue";
+import Search from "./components/search.vue";
 import Lave from "./components/lave.vue";
 
 const centerType = ref<boolean>();
 setInterval(() => (centerType.value = !centerType.value), 1e3 * 30);
+console.log(chrome.tabs);
 
 onBeforeUnmount(() => {});
 </script>
@@ -14,6 +16,7 @@ onBeforeUnmount(() => {});
 <template>
   <div class="wrapper">
     <component :is="centerType ? Time : Lave"></component>
+    <Search />
     <!-- <Covid /> -->
   </div>
 </template>
