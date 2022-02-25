@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "test",
+  "short_name": "test",
+  "description": "test",
+  "version": "0.0.1",
+  "version_name": "0.0.1",
+  "icons": {},
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "offline_enabled": true,
+  "permissions": ["storage", "chrome://favicon/"],
+  "optional_permissions": ["bookmarks", "topSites"],
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'"
+}
