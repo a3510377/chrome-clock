@@ -15,7 +15,7 @@ onMounted(() => {
           $_updata: false,
         });
     });
-    chrome.storage.local.get(["config"], ({ config }) => {
+    chrome.storage.local.get("config", ({ config }) => {
       if (config)
         store.dispatch("config/setConfig", { ...config, $_updata: false });
     });
@@ -23,14 +23,13 @@ onMounted(() => {
     let data = new URL(location.href).searchParams;
 
     store.dispatch("config/setConfig", {
-      lave: { title: data.get("laveTitle"), laveTime: data.get("laveTime") },
+      lave: { title: data.get("endTitle"), laveTime: data.get("endTime") },
       food: {
         schoolId: data.get("foodSchoolId"),
         schoolName: data.get("foodSchoolName"),
       },
       $_updata: false,
     });
-    // https://a3510377.github.io/chrome-clock/?foodSchoolName=竹橋國中&laveTitle=會考倒數&laveTime=2022-05-21T00:00:00+08:00
   }
 });
 

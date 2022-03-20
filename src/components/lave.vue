@@ -3,16 +3,18 @@ import { onBeforeUnmount, computed, watch, ref } from "vue";
 import { useStore } from "@/store";
 
 const store = useStore();
-const countDownDate = computed(() => store.state.config.lave.laveTime || 0);
+const countDownDateComp = computed(() => store.state.config.lave.laveTime);
+
+watch(countDownDateComp, (data) => data && (countDownDate.value = data));
+
 const title = computed(() => store.state.config.lave.title || "會考剩餘");
 
+const countDownDate = ref<Date | string>("2022-05-21T00:00:00+08:00");
 const time = ref<string[]>();
 
 const timeFormat = ["天", "小時", "分鐘", "秒"];
 const func = () => {
-  let distance =
-    new Date(+countDownDate.value || "2022-05-21T00:00:00+08:00").getTime() -
-    new Date().getTime();
+  let distance = new Date(countDownDate.value).getTime() - new Date().getTime();
 
   time.value = [
     distance / (1e3 * 60 * 60 * 24),
