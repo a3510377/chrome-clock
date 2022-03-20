@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "author": "monkey",
+  "name": "倒數",
+  "short_name": "倒數",
+  "description": "倒數",
+  "version": "0.0.2",
+  "version_name": "0.0.2",
+  "icons": {},
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "offline_enabled": true,
+  "permissions": ["storage", "declarativeContent"],
+  "action": {
+    "default_popup": "chrome/ui/popup/index.html"
+  }
+}
