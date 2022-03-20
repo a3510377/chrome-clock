@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from "vue";
+import { onBeforeUnmount } from "vue";
 import { useStore } from "@/store";
 
 import Food from "./components/food.vue";
