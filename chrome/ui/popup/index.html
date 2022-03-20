@@ -5,35 +5,41 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <link rel="stylesheet" href="./css/index.css">
+  <title>config</title>
 </head>
 
+
+
 <body>
-  <div>
-    <label for="setTitle">倒計時標題</label>
-    <input type="text" placeholder="請輸入您的倒計時標題" name="" id="setTitle" />
+  <!-- // lave: { title?: string; laveTime?: Date };
+// food: { schoolId?: string; schoolName?: string }; -->
+  <div class="input">
+    <label for="setTitle">倒計時標題:</label>
+    <input type="text" placeholder="會考剩餘" name="lave.title" id="setTitle" />
+  </div>
+  <div class="input">
+    <label for="setDate">設定到期時間:</label>
+    <input type="datetime-local" value="2022-05-21T00:00" name="lave.laveTime" id="setDate" />
   </div>
   <div>
-    <label for="setTitle">倒計時標題</label>
-    <input type="text" placeholder="請輸入到期時間" id="setTitle" />
-  </div>
-  <div>
-    <div>
+    <div class="input">
       <label for="checkLunch">午餐資訊</label>
-      <input type="checkbox" id="checkLunch">
+      <input type="checkbox" id="checkLunch" checked>
     </div>
-    <div>
-      <label for="setTitle">請輸入學校名:</label>
-      <input type="text" placeholder="請輸入學校名" id="schoolName" />
-    </div>
-    <div>
-      <label for="setTitle">請輸入學校ID:</label>
-      <input type="text" placeholder="請輸入學校ID" id="schoolID" />
+    <div class="lunchOptions">
+      <div class="input">
+        <label for="schoolName">請輸入學校名:</label>
+        <input type="text" placeholder="請輸入學校名" name="food.schoolName" id="schoolName" />
+      </div>
+      <div class="input">
+        <label for="schoolID">請輸入學校ID:</label>
+        <input type="text" placeholder="請輸入學校ID" name="food.schoolId" id="schoolID" />
+      </div>
     </div>
   </div>
 
-
-  <script src="./popup.js"></script>
+  <script src="./index.js"></script>
 </body>
 
 </html>
