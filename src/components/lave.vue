@@ -29,9 +29,7 @@ func();
 
 const loop = setInterval(func, 1e2);
 
-onBeforeUnmount(() => {
-  clearInterval(loop);
-});
+onBeforeUnmount(() => clearInterval(loop));
 </script>
 
 <template>
