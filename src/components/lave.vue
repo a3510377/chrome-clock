@@ -45,18 +45,21 @@ onBeforeUnmount(() => clearInterval(loop));
 
 <style lang="scss" scoped>
 .lave {
+  > div {
+    margin: 10px 0;
+  }
   .title {
     font-size: 5vw;
-    font-family: sans-serif;
   }
   .time {
     width: 9vw;
     text-align: center;
-    font-weight: 600;
+    font-weight: 100;
   }
   font-size: 6vw;
   width: 100%;
   height: 100%;
-  font-family: "Bungee Outline", "Shizuru", cursive;
+  font-family: "openhuninn", serif;
+  font-weight: 400;
 }
 </style>
