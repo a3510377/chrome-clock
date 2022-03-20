@@ -4,7 +4,7 @@ import { useStore } from "@/store";
 
 const store = useStore();
 const countDownDate = computed(() => store.state.config.lave.laveTime || 0);
-const title = computed(() => store.state.config.lave.title || "會考剩餘倒數");
+const title = computed(() => store.state.config.lave.title || "會考剩餘");
 
 const time = ref<string[]>();
 

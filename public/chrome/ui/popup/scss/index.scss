@@ -1,0 +1,26 @@
+body,
+html {
+  width: 400px;
+}
+.input {
+  padding: 1em 10px;
+  label[for] {
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  input[type="text"] {
+    color: black;
+    border: none;
+    border-bottom: 1px solid;
+    width: 230px;
+    // height: 30px;
+    padding: 6px 4px;
+    background-color: pink;
+    position: absolute;
+    opacity: 0.5;
+    filter: Alpha(opacity=50);
+    &::placeholder {
+      color: #644d51;
+    }
+  }
+}

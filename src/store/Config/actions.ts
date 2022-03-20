@@ -34,15 +34,18 @@ export const actions: ActionTree<State, RootState> & Actions = {
       ))
     );
     if (
-      (data.food.schoolName !== state.food.schoolName &&
-        data.food.schoolName) ||
-      (data.food.schoolId !== state.food.schoolId && data.food.schoolId)
+      (data.food?.schoolName !== state.food?.schoolName &&
+        data.food?.schoolName) ||
+      (data.food?.schoolId !== state.food?.schoolId && data.food?.schoolId)
     ) {
       const { data: find_data } = await axios({
         url: `https://fatraceschool.k12ea.gov.tw/school?SchoolName=${data.food.schoolName}`,
         method: "GET",
       });
       let { data: schoolData } = <findSchool>find_data;
+      data ||= { food: {}, lave: {} };
+      console.log(schoolData);
+
       if (schoolData.length) {
         data.$_updata = true;
         data.food.schoolId = schoolData[0].SchoolId.toString();
@@ -51,7 +54,7 @@ export const actions: ActionTree<State, RootState> & Actions = {
     }
 
     if (data.$_updata !== false && chrome.storage)
-      chrome.storage.sync.set({ config: data });
+      chrome.storage.local.set({ config: data });
     state.food = { ...state.food, ...data.food };
     state.lave = { ...state.lave, ...data.lave };
   },
