@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite --host",
     "serve": "vite preview",
-    "build": "vite build"
+    "build:dev": "cross-env NODE_ENV=development vite build",
+    "build:pro": "cross-env NODE_ENV=production vite build"
   },
   "dependencies": {
     "@types/chrome": "^0.0.178",
