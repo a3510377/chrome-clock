@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount, computed, watch, ref } from "vue";
+import { useStore } from "@/store";
+
+const store = useStore();
+const countDownDate = computed(() => store.state.config.lave.laveTime);
+const title = computed(() => store.state.config.lave.title || "會考剩餘倒數");
+
+watch(title, () => (document.title = title.value));
 
 const time = ref<string[]>();
-let countDownDate = new Date("2022-05-21T00:00:00+08:00").getTime();
+
 const timeFormat = ["天", "小時", "分鐘", "秒"];
 const func = () => {
   let nowTime = new Date().getTime();
-  let distance = countDownDate - nowTime;
+  let distance =
+    new Date(countDownDate.value || "2022-05-21T00:00:00+08:00").getTime() -
+    nowTime;
   time.value = [
     distance / (1e3 * 60 * 60 * 24),
     (distance % (1e3 * 60 * 60 * 24)) / (1e3 * 60 * 60),
@@ -25,7 +34,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="lave flex flex-item-center flex-center flex-down">
-    <div class="title">會考剩餘倒數</div>
+    <div class="title" v-text="title" />
     <div class="flex">
       <div class="flex" v-for="(txt, index) in timeFormat" :key="index">
         <span class="time" v-text="time?.[index]" /><span v-text="txt" />

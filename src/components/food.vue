@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from "vue";
+import { ref, onBeforeUnmount, computed, watch } from "vue";
 import axios from "axios";
+
+import { useStore } from "@/store";
 import { mealDataType, menuType } from "@/@types/food";
 
-onBeforeUnmount(() => clearInterval(timeLoop));
+const store = useStore();
 
-// https://fatraceschool.k12ea.gov.tw/school?SchoolName=%E7%AB%B9%E6%A9%8B
+const schoolId = computed(() => store.state.config.food.schoolId);
 const allDish = ref<menuType["data"]>();
+
+watch(schoolId, () => func());
+onBeforeUnmount(() => clearInterval(timeLoop));
 
 const func = async () => {
   let date = new Date();
   const { data } = await axios({
-    url: `https://fatraceschool.k12ea.gov.tw/offered/meal?SchoolId=64736396&period=${[
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate() + 1,
-    ].join("-")}&KitchenId=all`,
+    url: `https://fatraceschool.k12ea.gov.tw/offered/meal?SchoolId=${
+      schoolId.value
+    }&period=${[date.getFullYear(), date.getMonth() + 1, date.getDate()].join(
+      "-"
+    )}&KitchenId=all`,
     method: "GET",
   });
   let menu = (<mealDataType>data)?.data?.[0];

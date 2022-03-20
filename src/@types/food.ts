@@ -24,10 +24,23 @@ export interface mealDataType extends main {
 export interface menuType extends main {
   data: {
     /**餐點名 */
-    DishName: "糙米飯";
+    DishName: string;
     /**餐點類別 */
-    DishType: "主食";
+    DishType: string;
     /**餐點資訊 */
-    DishId: "1581641696253424";
+    DishId: string;
+  }[];
+}
+/**find school by name
+ * @url https://fatraceschool.k12ea.gov.tw/school?SchoolName=%E7%AB%B9%E6%A9%8B
+ */
+export interface findSchool extends main {
+  data: {
+    /**學校ID */
+    SchoolId: number;
+    /**學校Code */
+    SchoolCode: string;
+    /**學校名 */
+    SchoolName: string;
   }[];
 }

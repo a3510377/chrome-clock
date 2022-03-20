@@ -2,16 +2,12 @@ import axios from "axios";
 import { ActionContext, ActionTree } from "vuex";
 
 import { RootState } from "..";
+import { findSchool } from "@/@types/food";
 import { State } from "./state";
 
 export enum ActionsType {
   setConfig = "setConfig",
 }
-
-// EX:
-// [ActionsType.test]: (
-//   ctx: ActionContext<State, RootState>
-// ) => Promise<void>;
 
 export type Actions = {
   [ActionsType.setConfig]: (
@@ -21,10 +17,7 @@ export type Actions = {
 };
 
 export const actions: ActionTree<State, RootState> & Actions = {
-  [ActionsType.setConfig]: async (ctx, data) => {
-    const state = ctx.state;
-    if (data.$_updata !== false && chrome.storage)
-      chrome.storage.sync.set({ config: data });
+  [ActionsType.setConfig]: async ({ state }, data) => {
     data = <State>(
       (<unknown>(
         Object.fromEntries(
@@ -41,15 +34,24 @@ export const actions: ActionTree<State, RootState> & Actions = {
       ))
     );
     if (
-      data.food.schoolName !== state.food.schoolName ||
-      data.food.schoolId !== state.food.schoolId
+      (data.food.schoolName !== state.food.schoolName &&
+        data.food.schoolName) ||
+      (data.food.schoolId !== state.food.schoolId && data.food.schoolId)
     ) {
-      const { data: schoolData } = await axios({
-        url: `https://fatraceschool.k12ea.gov.tw/school?SchoolName=%E7%AB%B9%E6%A9%8B`,
+      const { data: find_data } = await axios({
+        url: `https://fatraceschool.k12ea.gov.tw/school?SchoolName=${data.food.schoolName}`,
         method: "GET",
       });
-      schoolData;
+      let { data: schoolData } = <findSchool>find_data;
+      if (schoolData.length) {
+        data.$_updata = true;
+        data.food.schoolId = schoolData[0].SchoolId.toString();
+        data.food.schoolName = schoolData[0].SchoolName;
+      }
     }
+
+    if (data.$_updata !== false && chrome.storage)
+      chrome.storage.sync.set({ config: data });
     state.food = { ...state.food, ...data.food };
     state.lave = { ...state.lave, ...data.lave };
   },
