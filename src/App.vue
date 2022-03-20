@@ -14,8 +14,8 @@ if (chrome.storage && location.href.indexOf("chrome")) {
       await store.dispatch("config/setConfig", { ...config, $_updata: false });
   });
   chrome.storage.local.get(["config"], (result) => {
-    if (result.config === void 0)
-      chrome.storage.local.set({ config: { a: "b" } });
+    if (result.config)
+      store.dispatch("config/setConfig", { ...result.config, $_updata: false });
   });
 } else {
   let data = new URL(location.href).searchParams;

@@ -13,6 +13,6 @@
   "offline_enabled": true,
   "permissions": ["storage", "declarativeContent"],
   "action": {
-    "default_popup": "ui/index.html"
+    "default_popup": "chrome/ui/popup/index.html"
   }
 }

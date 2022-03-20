@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <label for="setTitle">倒計時標題</label>
+    <input type="text" placeholder="請輸入您的倒計時標題" name="" id="setTitle" />
+  </div>
+  <div>
+    <label for="setTitle">倒計時標題</label>
+    <input type="text" placeholder="請輸入到期時間" id="setTitle" />
+  </div>
+  <div>
     <div>
-      標題
-      <input type="text" placeholder="" name="" id="" />
+      <label for="checkLunch">午餐資訊</label>
+      <input type="checkbox" id="checkLunch">
     </div>
-    <script>
-      chrome.storage.sync.set({ key: "" }, () => void 0);
-    </script>
-  </body>
+    <div>
+      <label for="setTitle">請輸入學校名:</label>
+      <input type="text" placeholder="請輸入學校名" id="schoolName" />
+    </div>
+    <div>
+      <label for="setTitle">請輸入學校ID:</label>
+      <input type="text" placeholder="請輸入學校ID" id="schoolID" />
+    </div>
+  </div>
+
+
+  <script src="./popup.js"></script>
+</body>
+
 </html>
