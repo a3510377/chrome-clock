@@ -1,16 +1,15 @@
 {
-  "manifest_version": 2,
-  "name": "test",
-  "short_name": "test",
-  "description": "test",
-  "version": "0.0.1",
-  "version_name": "0.0.1",
+  "manifest_version": 3,
+  "author": "monkey",
+  "name": "倒數",
+  "short_name": "倒數",
+  "description": "倒數",
+  "version": "0.0.2",
+  "version_name": "0.0.2",
   "icons": {},
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
   "offline_enabled": true,
-  "permissions": ["storage", "chrome://favicon/"],
-  "optional_permissions": ["bookmarks", "topSites"],
-  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'"
+  "permissions": ["storage", "declarativeContent"]
 }
