@@ -8,10 +8,10 @@ import Lave from "./components/lave.vue";
 const store = useStore();
 
 if (chrome.storage && location.href.indexOf("chrome")) {
-  chrome.storage.onChanged.addListener((changes) => {
+  chrome.storage.onChanged.addListener(async (changes) => {
     const { config } = changes;
     if (config)
-      store.commit("config/setConfig", { ...config, $_updata: false });
+      await store.dispatch("config/setConfig", { ...config, $_updata: false });
   });
   chrome.storage.local.get(["config"], (result) => {
     if (result.config === void 0)
@@ -20,7 +20,7 @@ if (chrome.storage && location.href.indexOf("chrome")) {
 } else {
   let data = new URL(location.href).searchParams;
 
-  store.commit("config/setConfig", {
+  store.dispatch("config/setConfig", {
     lave: { title: data.get("laveTitle"), laveTime: data.get("laveTime") },
     food: {
       schoolId: data.get("foodSchoolId"),

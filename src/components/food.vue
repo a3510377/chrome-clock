@@ -6,7 +6,6 @@ import { mealDataType, menuType } from "@/@types/food";
 onBeforeUnmount(() => clearInterval(timeLoop));
 
 // https://fatraceschool.k12ea.gov.tw/school?SchoolName=%E7%AB%B9%E6%A9%8B
-new URL(location.href).searchParams;
 const allDish = ref<menuType["data"]>();
 
 const func = async () => {
@@ -34,7 +33,7 @@ func();
 </script>
 
 <template>
-  <div class="menu">
+  <div class="menu" v-if="allDish">
     <div class="dish" v-for="(dish, index) in allDish" :key="index">
       <div class="cover">
         <img
