@@ -16,10 +16,8 @@ export type Mutations<S = State> = {
 
 export const mutations: Mutations<State> & Mutations = {
   [MutationsTypes.setConfig]: (state, data) => {
-    if (data.$_updata !== false) {
-      if (chrome.storage) chrome.storage.sync.set({ config: data });
-      else localStorage.setItem("config", JSON.stringify(data));
-    }
+    if (data.$_updata !== false && chrome.storage)
+      chrome.storage.sync.set({ config: data });
     data = <State>(
       (<unknown>(
         Object.fromEntries(
