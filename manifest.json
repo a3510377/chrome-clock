@@ -11,8 +11,16 @@
     "newtab": "index.html"
   },
   "offline_enabled": true,
-  "permissions": ["storage", "declarativeContent"],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "chrome/ui/popup/index.html"
-  }
+  },
+  "scope": ".",
+  "start_url": ".",
+  "lang": "zh-TW",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#0175C2",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
 }
