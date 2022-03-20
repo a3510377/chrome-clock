@@ -1,11 +1,34 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from "vue";
+import { useStore } from "@/store";
 
 import Food from "./components/food.vue";
 import Lave from "./components/lave.vue";
-Object.assign(window, { a: chrome, b: chrome.contextMenus });
-// const centerType = ref<boolean>();
-// setInterval(() => (centerType.value = !centerType.value), 1e3 * 30);
+
+const store = useStore();
+
+if (chrome.storage && location.href.indexOf("chrome")) {
+  chrome.storage.onChanged.addListener((changes) => {
+    const { config } = changes;
+    if (config)
+      store.commit("config/setConfig", { ...config, $_updata: false });
+  });
+  chrome.storage.local.get(["config"], (result) => {
+    if (result.config === void 0)
+      chrome.storage.local.set({ config: { a: "b" } });
+  });
+} else {
+  let data = new URL(location.href).searchParams;
+
+  store.commit("config/setConfig", {
+    lave: { title: data.get("laveTitle"), laveTime: data.get("laveTime") },
+    food: {
+      schoolId: data.get("foodSchoolId"),
+      schoolName: data.get("foodSchoolName"),
+    },
+    $_updata: false,
+  });
+}
 
 onBeforeUnmount(() => {});
 </script>

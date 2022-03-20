@@ -11,5 +11,8 @@
     "newtab": "index.html"
   },
   "offline_enabled": true,
-  "permissions": ["storage", "declarativeContent"]
+  "permissions": ["storage", "declarativeContent"],
+  "action": {
+    "default_popup": "ui/index.html"
+  }
 }
