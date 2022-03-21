@@ -1,4 +1,4 @@
-if (!chrome.storage) location.href = "/";
+if (!chrome?.storage) location.href = "/";
 
 const configData = {
   lave: ["title", "laveTime"],
