@@ -22,15 +22,24 @@ onMounted(() => {
     });
   } else {
     let data = new URL(location.href).searchParams;
-
-    store.dispatch("config/setConfig", {
-      lave: { title: data.get("endTitle"), laveTime: data.get("endTime") },
-      food: {
-        schoolId: data.get("foodSchoolId"),
-        schoolName: data.get("foodSchoolName"),
-      },
-      $_updata: false,
-    });
+    if (
+      Object.keys(data).filter((_) =>
+        ["endTitle", "endTime", "foodSchoolId", "foodSchoolName"].includes(_)
+      )
+    )
+      store.dispatch("config/setConfig", {
+        lave: { title: data.get("endTitle"), laveTime: data.get("endTime") },
+        food: {
+          schoolId: data.get("foodSchoolId"),
+          schoolName: data.get("foodSchoolName"),
+        },
+        $_updata: false,
+      });
+    else
+      store.dispatch("config/setConfig", {
+        ...JSON.parse(localStorage.getItem("config") || "{}"),
+        $_updata: false,
+      });
   }
 });
 

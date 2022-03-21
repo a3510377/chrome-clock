@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount, computed, watch } from "vue";
+import { ref, onBeforeUnmount, computed, watch, onMounted } from "vue";
 import axios from "axios";
 
 import { useStore } from "@/store";
@@ -14,8 +14,13 @@ const show = ref<boolean>(false);
 
 watch(schoolId, () => func());
 watch(_show, () => (show.value = !!_show.value));
-watch(show, () => (store.state.config.food.open = show.value));
 
+onMounted(() => {
+  const update = () => {
+    store.dispatch("config/setConfig", { food: { open: show.value } });
+  };
+  watch(show, update);
+});
 onBeforeUnmount(() => clearInterval(timeLoop));
 
 const func = async () => {

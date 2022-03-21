@@ -3,15 +3,66 @@ import { ref, onBeforeUnmount, computed, watch } from "vue";
 import axios from "axios";
 
 import { useStore } from "@/store";
+import { AllStateTypes } from "@/store/types";
 
-const isChromePlugin: boolean = !!chrome?.storage;
+const store = useStore();
 
 const show = ref<boolean>(false);
+const config = ref<AllStateTypes["config"]>({ lave: {}, food: {} });
+
+watch(config, () => {
+  store.dispatch("config/setConfig", { ...config, $_updata: true });
+});
+const isChromePlugin: boolean = !!chrome?.storage;
 </script>
 
 <template>
   <div v-if="!isChromePlugin" class="config">
-    <div class="icon">
+    <div class="content" v-if="show">
+      <div class="input">
+        <label for="setTitle">倒計時標題:</label>
+        <input
+          type="text"
+          placeholder="會考剩餘"
+          v-model="config.lave.title"
+          id="setTitle"
+        />
+      </div>
+      <div class="input">
+        <label for="setDate">設定到期時間:</label>
+        <!-- value="2022-05-21T00:00" -->
+
+        <input
+          type="datetime-local"
+          v-model="config.lave.laveTime"
+          id="setDate"
+        />
+      </div>
+      <div>
+        <div class="lunchOptions">
+          <div class="input">
+            <label for="schoolName">請輸入學校名:(可選)</label>
+            <input
+              type="text"
+              placeholder="請輸入學校名"
+              v-model="config.food.schoolName"
+              id="schoolName"
+            />
+          </div>
+          <div class="input">
+            <label for="schoolID">請輸入學校ID:(可選)</label>
+            <input
+              type="text"
+              v-model="config.food.schoolId"
+              placeholder="請輸入學校ID"
+              id="schoolID"
+            />
+          </div>
+        </div>
+      </div>
+      <div></div>
+    </div>
+    <div class="icon" @click="show = !show">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="24px"
@@ -25,7 +76,6 @@ const show = ref<boolean>(false);
         />
       </svg>
     </div>
-    <div class="content"></div>
   </div>
 </template>
 
@@ -33,5 +83,30 @@ const show = ref<boolean>(false);
 .config {
   cursor: pointer;
   position: absolute;
+  bottom: 10px;
+  left: 10px;
+
+  .input {
+    padding: 1em 10px;
+    label[for] {
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    input[type="text"] {
+      color: black;
+      border: none;
+      border-bottom: 1px solid;
+      width: 230px;
+      // height: 30px;
+      padding: 6px 4px;
+      background-color: pink;
+      position: absolute;
+      opacity: 0.5;
+      filter: Alpha(opacity=50);
+      &::placeholder {
+        color: #644d51;
+      }
+    }
+  }
 }
 </style>
