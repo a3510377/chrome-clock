@@ -35,22 +35,28 @@ const func = async () => {
 const timeLoop = setInterval(func, 1e3 * 60 * 10);
 
 func();
+const show = ref<boolean>();
 </script>
 
 <template>
-  <div class="menu" v-if="allDish">
-    <div class="dish" v-for="(dish, index) in allDish" :key="index">
-      <div class="cover">
-        <img
-          :src="`https://fatraceschool.k12ea.gov.tw/dish/pic/${dish.DishId}`"
-          alt="菜色圖片"
-        />
+  <div v-if="allDish">
+    <transition>
+      <div class="menu" v-if="show">
+        <div class="dish" v-for="(dish, index) in allDish" :key="index">
+          <div class="cover">
+            <img
+              :src="`https://fatraceschool.k12ea.gov.tw/dish/pic/${dish.DishId}`"
+              alt="菜色圖片"
+            />
+          </div>
+          <div class="info flex flex-down flex-item-center">
+            <span v-text="dish.DishType" />
+            <span v-text="dish.DishName" />
+          </div>
+        </div>
       </div>
-      <div class="info flex flex-down flex-item-center">
-        <span v-text="dish.DishType" />
-        <span v-text="dish.DishName" />
-      </div>
-    </div>
+    </transition>
+    <button @click="show = !show">test</button>
   </div>
 </template>
 
@@ -58,13 +64,13 @@ func();
 .menu {
   position: fixed;
   top: 72.5%;
-  left: 70%;
   right: 0;
   bottom: 0;
   display: grid;
   align-items: center;
   grid-template-columns: repeat(4, calc(100% / 4));
   height: 10vh;
+  width: 30%;
   .dish {
     height: 100%;
     padding: 5px;
@@ -86,22 +92,49 @@ func();
     }
   }
   @media all and (max-width: 1380px) {
-    left: 60%;
+    width: 40%;
   }
   @media all and (max-width: 1080px) {
-    left: 50%;
+    width: 50%;
     .dish {
       font-size: 1.5vw;
     }
   }
   @media all and (max-width: 680px) {
-    left: 25%;
+    width: 75%;
   }
   @media all and (max-width: 480px) {
-    left: 0;
+    width: 100%;
   }
   @media all and (max-width: 380px), (max-height: 730px) {
     display: none;
   }
+}
+@keyframes comeIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes comeOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.v-enter-active {
+  animation: comeIn 1s;
+  transition: opacity 1s ease-out;
+}
+
+.v-leave-active {
+  animation: comeOut 1s;
+  transition: opacity 1s ease-out;
 }
 </style>
