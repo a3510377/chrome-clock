@@ -8,9 +8,14 @@ import { mealDataType, menuType } from "@/@types/food";
 const store = useStore();
 
 const schoolId = computed(() => store.state.config.food.schoolId);
+const _show = computed(() => store.state.config.food.open);
 const allDish = ref<menuType["data"]>();
+const show = ref<boolean>(false);
 
 watch(schoolId, () => func());
+watch(_show, () => (show.value = !!_show.value));
+watch(show, () => (store.state.config.food.open = show.value));
+
 onBeforeUnmount(() => clearInterval(timeLoop));
 
 const func = async () => {
@@ -35,7 +40,6 @@ const func = async () => {
 const timeLoop = setInterval(func, 1e3 * 60 * 10);
 
 func();
-const show = ref<boolean>();
 </script>
 
 <template>
@@ -89,13 +93,14 @@ const show = ref<boolean>();
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .menu {
-  position: fixed;
   top: 72.5%;
   right: 0;
-  bottom: 0;
   width: 30%;
+  bottom: 0;
+  overflow: hidden;
+  position: absolute;
   @keyframes show {
     from {
       transform: translateX(0);
@@ -105,9 +110,10 @@ const show = ref<boolean>();
     }
   }
   .type {
-    position: absolute;
     right: 1em;
     bottom: 1em;
+    cursor: pointer;
+    position: absolute;
   }
   .content {
     display: grid;

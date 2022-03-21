@@ -4,10 +4,11 @@ import { useStore } from "@/store";
 
 import Food from "./components/food.vue";
 import Lave from "./components/lave.vue";
+import Config from "./components/config.vue";
 
 const store = useStore();
 onMounted(() => {
-  if (chrome.storage && location.href.startsWith("chrome")) {
+  if (chrome?.storage && location.href.startsWith("chrome")) {
     chrome.storage.onChanged.addListener(async ({ config }) => {
       if (config)
         await store.dispatch("config/setConfig", {
@@ -40,6 +41,7 @@ onBeforeUnmount(() => {});
   <div class="wrapper">
     <Lave />
     <Food />
+    <Config />
   </div>
 </template>
 
