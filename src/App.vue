@@ -23,7 +23,7 @@ onMounted(() => {
   } else {
     let data = new URL(location.href).searchParams;
     if (
-      Object.keys(data).filter((_) =>
+      !Object.keys(data).filter((_) =>
         ["endTitle", "endTime", "foodSchoolId", "foodSchoolName"].includes(_)
       )
     )
