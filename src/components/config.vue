@@ -7,7 +7,6 @@ import {
   onMounted,
   computed,
   watch,
-  InputHTMLAttributes,
 } from "vue";
 import axios from "axios";
 
@@ -17,9 +16,9 @@ import { findSchool } from "@/@types/food";
 
 const store = useStore();
 
-const test = ref<string>("");
 const show = ref<boolean>(false);
-const schoolConfig = ref<HTMLInputElement>();
+const schoolName = ref<string>("");
+const schoolConfigEl = ref<HTMLInputElement>();
 const isChromePlugin: boolean = !!chrome?.storage;
 
 const configState = computed(() => store.state.config);
@@ -30,6 +29,8 @@ watch(configState, () => (config = configState.value));
 watch(config, () =>
   store.dispatch("config/setConfig", { ...config, $_updata: true })
 );
+
+/*  */
 onMounted(() => {
   axios({
     method: "GET",
@@ -40,11 +41,30 @@ onMounted(() => {
 });
 
 let nowSchool: HTMLLIElement | null;
+const schoolsShow = ref<boolean>();
 const mouseEvent = ($event: MouseEvent) => {
   nowSchool?.classList.remove("highlighted");
   nowSchool = <HTMLLIElement | null>$event.target;
   nowSchool?.classList.add("highlighted");
 };
+const setSchool = ($event: MouseEvent) => {
+  const data = (<HTMLLIElement | null>$event.target)?.dataset;
+  if (!data) return;
+  config.food.schoolId = data.schoolId;
+  config.food.schoolName = data.schoolName;
+  schoolName.value = <string>data.schoolName;
+};
+
+const checkInSchoolConfigFunc = (event: MouseEvent) => {
+  if (
+    event.target &&
+    !(event.target == schoolConfigEl.value) &&
+    !schoolConfigEl.value?.contains(<Node>event.target)
+  )
+    schoolsShow.value = false;
+};
+addEventListener("click", checkInSchoolConfigFunc);
+onBeforeUnmount(() => removeEventListener("click", checkInSchoolConfigFunc));
 </script>
 
 <template>
@@ -71,32 +91,33 @@ const mouseEvent = ($event: MouseEvent) => {
           id="setDate"
         />
       </div>
-      <div class="input">
+      <div class="input setSchool" @blur="schoolsShow = false">
         <label for="schoolName">請輸入學校名:(可選)</label>
         <input
-          ref="schoolConfig"
+          ref="schoolConfigEl"
           autocapitalize="off"
           autocomplete="off"
           spellcheck="false"
           type="search"
-          placeholder="請輸入學校名"
-          v-model="test"
+          placeholder="請輸入學校名 / id / code"
+          v-model="schoolName"
           id="schoolName"
-          @keydown.up="() => ({})"
-          @keydown.down="() => ({})"
+          @keydown.esc="schoolsShow = false"
+          @focus="schoolsShow = true"
         />
-        <ul class="schools">
+        <ul class="schools" v-show="schoolsShow">
           <li
-            v-for="(school, index) in schools.data.slice(0, 20)"
+            v-for="(school, index) in schools.data"
             v-text="school.SchoolName"
             :key="index"
-            :data-schoolId="school.SchoolId"
-            :data-schoolCode="school.SchoolCode"
-            :data-schoolName="school.SchoolName"
+            :data-school-id="school.SchoolId"
+            :data-school-code="school.SchoolCode"
+            :data-school-name="school.SchoolName"
             @mouseover="mouseEvent"
+            @click="[setSchool($event), (schoolsShow = !schoolsShow)]"
             v-show="
               `${school.SchoolName},${school.SchoolCode},${school.SchoolId}`.includes(
-                test
+                schoolName
               )
             "
           />
@@ -128,31 +149,48 @@ const mouseEvent = ($event: MouseEvent) => {
   left: 10px;
 
   .input {
+    width: 100%;
     padding: 1em 10px;
     label[for] {
       cursor: pointer;
       margin-right: 10px;
     }
-    input[type="text"] {
-      color: black;
+    input {
+      width: 100%;
+      color: #fff;
       border: none;
       border-bottom: 1px solid;
-      width: 230px;
-      // height: 30px;
       padding: 6px 4px;
-      background-color: pink;
-      position: absolute;
-      opacity: 0.5;
-      filter: Alpha(opacity=50);
+      border-radius: 5px 5px 0 0;
       &::placeholder {
-        color: #644d51;
+        color: #8f8f8f;
+        font-weight: 600;
       }
     }
   }
-  .schools {
-    color: white;
-    max-height: 200px;
-    overflow-y: auto;
+  .setSchool {
+    position: relative;
+
+    .schools {
+      width: 100%;
+      color: white;
+      max-height: 200px;
+      overflow-y: auto;
+      position: absolute;
+      bottom: 100%;
+      background-color: rgb(104, 104, 104);
+      border-radius: 5px;
+      list-style: none;
+      padding: 15px;
+      li {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 5px;
+        &:hover {
+          background-color: rgb(82, 82, 82);
+        }
+      }
+    }
   }
 }
 </style>
