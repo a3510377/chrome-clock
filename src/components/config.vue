@@ -156,6 +156,7 @@ onBeforeUnmount(() => removeEventListener("click", checkInSchoolConfigFunc));
       margin-right: 10px;
     }
     input {
+      margin-top: 5px;
       width: 100%;
       color: #fff;
       border: none;
