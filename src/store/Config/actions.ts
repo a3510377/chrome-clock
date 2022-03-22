@@ -56,6 +56,7 @@ export const actions: ActionTree<State, RootState> & Actions = {
     if (data.$_updata !== false)
       if (chrome?.storage) chrome.storage.local.set({ config: data });
       else localStorage.setItem("config", JSON.stringify(data));
+
     state.food = { ...state.food, ...data.food };
     state.lave = { ...state.lave, ...data.lave };
   },

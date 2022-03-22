@@ -1,19 +1,50 @@
+import { findSchool } from "@/@types/food";
 <script setup lang="ts">
-import { ref, onBeforeUnmount, computed, watch } from "vue";
+import {
+  ref,
+  reactive,
+  onBeforeUnmount,
+  onMounted,
+  computed,
+  watch,
+  InputHTMLAttributes,
+} from "vue";
 import axios from "axios";
 
 import { useStore } from "@/store";
 import { AllStateTypes } from "@/store/types";
+import { findSchool } from "@/@types/food";
 
 const store = useStore();
 
+const test = ref<string>("");
 const show = ref<boolean>(false);
-const config = ref<AllStateTypes["config"]>({ lave: {}, food: {} });
-
-watch(config, () => {
-  store.dispatch("config/setConfig", { ...config, $_updata: true });
-});
+const schoolConfig = ref<HTMLInputElement>();
 const isChromePlugin: boolean = !!chrome?.storage;
+
+const configState = computed(() => store.state.config);
+let config = reactive<AllStateTypes["config"]>({ lave: {}, food: {} });
+let schools = reactive<findSchool>({ data: [], result: 1 });
+
+watch(configState, () => (config = configState.value));
+watch(config, () =>
+  store.dispatch("config/setConfig", { ...config, $_updata: true })
+);
+onMounted(() => {
+  axios({
+    method: "GET",
+    url: "https://fatraceschool.k12ea.gov.tw/school",
+  })
+    .then(({ data }) => (schools.data = data.data))
+    .catch();
+});
+
+let nowSchool: HTMLLIElement | null;
+const mouseEvent = ($event: MouseEvent) => {
+  nowSchool?.classList.remove("highlighted");
+  nowSchool = <HTMLLIElement | null>$event.target;
+  nowSchool?.classList.add("highlighted");
+};
 </script>
 
 <template>
@@ -22,6 +53,7 @@ const isChromePlugin: boolean = !!chrome?.storage;
       <div class="input">
         <label for="setTitle">倒計時標題:</label>
         <input
+          autocomplete="off"
           type="text"
           placeholder="會考剩餘"
           v-model="config.lave.title"
@@ -33,34 +65,43 @@ const isChromePlugin: boolean = !!chrome?.storage;
         <!-- value="2022-05-21T00:00" -->
 
         <input
+          autocomplete="off"
           type="datetime-local"
           v-model="config.lave.laveTime"
           id="setDate"
         />
       </div>
-      <div>
-        <div class="lunchOptions">
-          <div class="input">
-            <label for="schoolName">請輸入學校名:(可選)</label>
-            <input
-              type="text"
-              placeholder="請輸入學校名"
-              v-model="config.food.schoolName"
-              id="schoolName"
-            />
-          </div>
-          <div class="input">
-            <label for="schoolID">請輸入學校ID:(可選)</label>
-            <input
-              type="text"
-              v-model="config.food.schoolId"
-              placeholder="請輸入學校ID"
-              id="schoolID"
-            />
-          </div>
-        </div>
+      <div class="input">
+        <label for="schoolName">請輸入學校名:(可選)</label>
+        <input
+          ref="schoolConfig"
+          autocapitalize="off"
+          autocomplete="off"
+          spellcheck="false"
+          type="search"
+          placeholder="請輸入學校名"
+          v-model="test"
+          id="schoolName"
+          @keydown.up="() => ({})"
+          @keydown.down="() => ({})"
+        />
+        <ul class="schools">
+          <li
+            v-for="(school, index) in schools.data.slice(0, 20)"
+            v-text="school.SchoolName"
+            :key="index"
+            :data-schoolId="school.SchoolId"
+            :data-schoolCode="school.SchoolCode"
+            :data-schoolName="school.SchoolName"
+            @mouseover="mouseEvent"
+            v-show="
+              `${school.SchoolName},${school.SchoolCode},${school.SchoolId}`.includes(
+                test
+              )
+            "
+          />
+        </ul>
       </div>
-      <div></div>
     </div>
     <div class="icon" @click="show = !show">
       <svg
@@ -107,6 +148,11 @@ const isChromePlugin: boolean = !!chrome?.storage;
         color: #644d51;
       }
     }
+  }
+  .schools {
+    color: white;
+    max-height: 200px;
+    overflow-y: auto;
   }
 }
 </style>
