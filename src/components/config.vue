@@ -65,6 +65,9 @@ const checkInSchoolConfigFunc = (event: MouseEvent) => {
 };
 addEventListener("click", checkInSchoolConfigFunc);
 onBeforeUnmount(() => removeEventListener("click", checkInSchoolConfigFunc));
+const regular = (str: string) => (
+  [["台", "臺"]].forEach((_) => (str = str.replaceAll(_[0], _[1]))), str
+);
 </script>
 
 <template>
@@ -82,8 +85,6 @@ onBeforeUnmount(() => removeEventListener("click", checkInSchoolConfigFunc));
       </div>
       <div class="input">
         <label for="setDate">設定到期時間:</label>
-        <!-- value="2022-05-21T00:00" -->
-
         <input
           autocomplete="off"
           type="datetime-local"
@@ -107,7 +108,11 @@ onBeforeUnmount(() => removeEventListener("click", checkInSchoolConfigFunc));
         />
         <ul class="schools" v-show="schoolsShow">
           <li
-            v-for="(school, index) in schools.data"
+            v-for="(school, index) in schools.data.filter((school) =>
+              `${regular(school.SchoolName)},${school.SchoolCode},${
+                school.SchoolId
+              }`.includes(regular(schoolName))
+            )"
             v-text="school.SchoolName"
             :key="index"
             :data-school-id="school.SchoolId"
@@ -115,11 +120,6 @@ onBeforeUnmount(() => removeEventListener("click", checkInSchoolConfigFunc));
             :data-school-name="school.SchoolName"
             @mouseover="mouseEvent"
             @click="[setSchool($event), (schoolsShow = !schoolsShow)]"
-            v-show="
-              `${school.SchoolName},${school.SchoolCode},${school.SchoolId}`.includes(
-                schoolName
-              )
-            "
           />
         </ul>
       </div>

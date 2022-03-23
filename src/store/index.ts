@@ -11,7 +11,8 @@ export enum Modules {
 export const key: InjectionKey<Store<RootStateTypes>> = Symbol("vue-store");
 export type RootState = typeof key;
 
-const store = createStore({
+const store = createStore<any>({
+  state: { type: void 0 },
   modules: { [Modules.CONFIG]: configModule },
 });
 
