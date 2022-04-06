@@ -25,7 +25,7 @@ const func = () => {
   let data = time.value
     .map((d, index) => [index, +d])
     .filter(([, d]) => !(d === 0))[0];
-  document.title = `${title.value} ${data[1] || ""}${timeFormat[data[0]]}`;
+  document.title = `${title.value} ${+data[1] + 1 || ""}${timeFormat[data[0]]}`;
 };
 func();
 
