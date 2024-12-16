@@ -34,7 +34,7 @@ import './style.css';
       '#laveTime-input'
     )! as HTMLInputElement;
 
-    if ('chrome' in window) {
+    if (!('chrome' in window)) {
       settingsEl.classList.remove('hidden');
     }
 
