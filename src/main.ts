@@ -25,6 +25,7 @@ import './style.css';
     const minuteEl = document.querySelector('#minute>p')!;
     const secondEl = document.querySelector('#second>p')!;
     const titleEl = document.querySelector('#title')!;
+    const settingsEl = document.querySelector('#settings')!;
     const openSettingBtn = document.querySelector('#open-setting')!;
     const inputTitleEl = document.querySelector(
       '#title-input'
@@ -32,6 +33,11 @@ import './style.css';
     const inputLaveTimeEl = document.querySelector(
       '#laveTime-input'
     )! as HTMLInputElement;
+
+    if ('chrome' in window) {
+      settingsEl.classList.remove('hidden');
+    }
+
     const searchParams = new URLSearchParams(window.location.search);
 
     let countDownDate = new Date('2025-04-26T00:00:00+08:00').getTime();
