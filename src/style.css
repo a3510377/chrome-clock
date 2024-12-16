@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+.float {
+  position: relative;
+  animation: float 35s ease-out infinite;
+
+  &.inv {
+    animation: float-inv 35s ease-out infinite;
+  }
+}
+
+.time {
+  display: flex;
+  gap: 1rem;
+
+  @apply flex-col bg-slate-100 p-5 rounded-lg shadow shadow-slate-900 justify-center z-10;
+  @apply sm:flex-row;
+}
+
+@keyframes float {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(var(--x), var(--y)) rotate(90deg);
+  }
+  50% {
+    transform: translate(calc(-var(--x)), var(--y)) rotate(180deg);
+  }
+  75% {
+    transform: translate(var(--x), calc(-var(--y))) rotate(270deg);
+  }
+  to {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes float-inv {
+  from {
+    transform: translate(var(--x), calc(-var(--y))) rotate(270deg);
+  }
+  25% {
+    transform: translate(calc(-var(--x)), var(--y)) rotate(180deg);
+  }
+  50% {
+    transform: translate(var(--x), calc(-var(--y))) rotate(270deg);
+  }
+  75% {
+    transform: translate(calc(-var(--x)), var(--y)) rotate(180deg);
+  }
+  to {
+    transform: translate(calc(var(--x)), var(--y)) rotate(180deg);
+  }
+}

@@ -1,26 +1,13 @@
 {
+  "$schema": "https://json.schemastore.org/chrome-manifest",
   "manifest_version": 3,
-  "author": "monkey",
   "name": "倒數",
   "short_name": "倒數",
-  "description": "倒數",
-  "version": "0.0.2",
-  "version_name": "0.0.2",
-  "icons": {},
+  "version": "0.0.3",
+  "version_name": "0.0.3",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "offline_enabled": true,
-  "permissions": ["storage"],
-  "action": {
-    "default_popup": "chrome/ui/popup/index.html"
-  },
-  "scope": ".",
-  "start_url": ".",
-  "lang": "zh-TW",
-  "display": "standalone",
-  "background_color": "#fff",
-  "theme_color": "#0175C2",
-  "orientation": "portrait-primary",
-  "prefer_related_applications": false
+  "permissions": ["storage", "geolocation"],
+  "description": "倒數計時器"
 }

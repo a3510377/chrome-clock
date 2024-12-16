@@ -1,56 +1,64 @@
 <!DOCTYPE html>
-<html lang="zh-tw">
+<html lang="en" class="select-none bg-slate-900">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="一個簡單的倒數計時器" />
+    <meta name="keywords" content="倒數計時器" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Content-Language" content="zh_TW">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="倒數">
-  <meta property="al:ios:app_name" content="倒數">
-  <meta property="og:title" content="倒數">
-  <meta property="og:site_name" content="倒數">
-  <meta property="og:locale" content="zh_TW">
-  <meta property="og:description" content="倒數">
-  <meta property="og:url" content="https://a3510377.github.io/chrome-clock/">
-  <meta property="og:type" content="website">
-  <meta property=" og:image" content="/favicon.ico">
-  <link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico" />
-  <meta name="thumbnail" content="/favicon.ico">
-  <meta itemprop="name" content="倒數">
-  <meta itemprop="description" content="倒數及學校當天午餐">
-  <meta itemprop="url" content="https://a3510377.github.io/chrome-clock/">
-  <meta name="url" href="https://a3510377.github.io/chrome-clock/">
-  <meta name="keywords" content="a3510377,monkey,clock,lave,school lunch,chrome plugin,會考倒數">
-  <meta name="description" content="倒數及學校當天午餐">
-  <meta name="abstract" content="倒數">
-  <meta name="subject" content="倒數,學校午餐">
-  <meta name="color-scheme" content="dark">
-  <meta name="application-name" content="倒數">
-  <meta name="author" content="a3510377">
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "website",
-      "name": "倒數",
-      "url": "https://a3510377.github.io/chrome-clock/",
-      "description": "倒數"
-    }
-  </script>
-  <meta name="geo.region" content="TW">
-  <link rel="apple-touch-startup-image" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/favicon.ico">
-  <link rel="icon" href="/favicon.ico">
+    <!-- 
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=star_menu_book_auto_stories_experiment_local_library"
+    /> -->
+    <link rel="stylesheet" href="./src/fonts/font.css" />
 
-  <title>倒數</title>
-</head>
+    <title></title>
+  </head>
+  <body class="w-screen h-screen flex items-center">
+    <div
+      id="app"
+      class="w-full h-full sm:w-4/5 sm:h-2/5 sm:max-w-[2000px] sm:max-h-[800px] mx-auto bg-slate-200 sm:rounded-3xl sm:p-10 relative flex items-center justify-center"
+    >
+      <div
+        class="absolute inset-0 overflow-hidden text-black after:bg-black after:opacity-5 after:inset-0 after:absolute opacity-50 z-0"
+        id="bg-float-icons"
+      >
+        <!-- <span class="material-symbols-outlined float">bolt</span> -->
+        <!-- <span class="material-symbols-outlined float">edit</span> -->
+      </div>
 
-<body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
-</body>
+      <div
+        class="flex items-center justify-center flex-col gap-10 w-4/5 sm:w-auto text-center z-10"
+      >
+        <h1
+          id="title"
+          class="text-4xl md:text-5xl text-black font-bold lg:text-6xl lg:pb-5"
+        ></h1>
 
+        <div
+          class="grid text-4xl gap-4 text-black lg:text-6xl md:text-5xl grid-cols-1 min-[340px]:grid-cols-2 lg:grid-cols-4"
+        >
+          <div id="day" class="time">
+            <p></p>
+            <span>天</span>
+          </div>
+          <div id="hour" class="time">
+            <p></p>
+            <span>時</span>
+          </div>
+          <div id="minute" class="time">
+            <p></p>
+            <span>分</span>
+          </div>
+          <div id="second" class="time">
+            <p></p>
+            <span>秒</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

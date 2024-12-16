@@ -1,25 +1,20 @@
 {
-  "name": "vue3-vuex-vite-ts",
+  "name": "chrome-clock",
+  "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "serve": "vite preview",
-    "build:dev": "cross-env NODE_ENV=development vite build",
-    "build:pro": "cross-env NODE_ENV=production vite build"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.2",
+    "vite": "^6.0.1"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.178",
-    "@types/node": "^17.0.13",
-    "@types/vue": "^2.0.0",
-    "@vitejs/plugin-vue": "^2.0.0",
-    "axios": "^0.26.0",
-    "cross-env": "^7.0.3",
-    "dotenv": "^14.3.2",
-    "sass": "^1.49.0",
-    "typescript": "^4.6.2",
-    "vite": "^2.7.2",
-    "vue": "^3.2.25",
-    "vue-tsc": "^0.29.8",
-    "vuex": "^4.0.2"
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16"
   }
 }
