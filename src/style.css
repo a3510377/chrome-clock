@@ -62,6 +62,6 @@
     transform: translate(calc(-var(--x)), var(--y)) rotate(180deg);
   }
   to {
-    transform: translate(calc(var(--x)), var(--y)) rotate(180deg);
+    transform: translate(var(--x), calc(-var(--y))) rotate(270deg);
   }
 }

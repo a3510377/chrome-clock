@@ -1,7 +1,7 @@
 import './style.css';
 
 (() => {
-  const BASE_TITLE = '114年統一入學測驗倒數';
+  let baseTitle = '114年統一入學測驗倒數';
   const ONE_SECOND = 1000;
   const ONE_MINUTE = ONE_SECOND * 60;
   const ONE_HOUR = ONE_MINUTE * 60;
@@ -25,10 +25,44 @@ import './style.css';
     const minuteEl = document.querySelector('#minute>p')!;
     const secondEl = document.querySelector('#second>p')!;
     const titleEl = document.querySelector('#title')!;
+    const openSettingBtn = document.querySelector('#open-setting')!;
+    const inputTitleEl = document.querySelector(
+      '#title-input'
+    )! as HTMLInputElement;
+    const inputLaveTimeEl = document.querySelector(
+      '#laveTime-input'
+    )! as HTMLInputElement;
+    const searchParams = new URLSearchParams(window.location.search);
 
-    titleEl.textContent = BASE_TITLE;
+    let countDownDate = new Date('2025-04-26T00:00:00+08:00').getTime();
 
-    const countDownDate = new Date('2025-04-26T00:00:00+08:00').getTime();
+    const laveTime = searchParams.get('laveTime');
+    baseTitle = searchParams.get('title') || baseTitle;
+    countDownDate = laveTime
+      ? new Date(/^\d+$/.test(laveTime) ? +laveTime : laveTime).getTime()
+      : countDownDate;
+    inputTitleEl.value = baseTitle;
+    inputLaveTimeEl.valueAsDate = new Date(countDownDate);
+
+    inputTitleEl.addEventListener('change', () => {
+      baseTitle = inputTitleEl.value;
+      titleEl.textContent = baseTitle;
+      update();
+      location.search = `?title=${baseTitle}&laveTime=${countDownDate}`;
+    });
+
+    inputLaveTimeEl.addEventListener('change', () => {
+      countDownDate = (inputLaveTimeEl.valueAsDate || new Date()).getTime();
+      update();
+      location.search = `?title=${baseTitle}&laveTime=${countDownDate}`;
+    });
+
+    openSettingBtn.addEventListener('click', () => {
+      const setting = document.querySelector('#setting')!;
+      setting.classList.toggle('hidden');
+    });
+
+    titleEl.textContent = baseTitle;
 
     const icons = document.querySelector('#bg-float-icons') as HTMLDivElement;
     icons.append(
@@ -60,7 +94,7 @@ import './style.css';
         hourEl.textContent = '00';
         minuteEl.textContent = '00';
         secondEl.textContent = '00';
-        document.title = `結束了 - ${BASE_TITLE}`;
+        document.title = `結束了 - ${baseTitle}`;
         clearInterval(loop);
         return;
       }
@@ -74,7 +108,7 @@ import './style.css';
       hourEl.textContent = String(hours).padStart(2, '0');
       minuteEl.textContent = String(minutes).padStart(2, '0');
       secondEl.textContent = String(seconds).padStart(2, '0');
-      document.title = `${days}天 - ${BASE_TITLE}`;
+      document.title = `${days}天 - ${baseTitle}`;
     };
 
     update();
