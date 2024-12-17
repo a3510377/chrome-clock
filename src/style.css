@@ -11,7 +11,7 @@
   gap: 1rem;
   display: flex;
 
-  @apply sm:flex-row sm:p-5 sm:min-w-40;
+  @apply sm:!flex-row sm:!p-5 sm:!min-w-40;
   @apply flex-col bg-slate-100 p-4 rounded-lg shadow shadow-slate-900 justify-center z-10 min-w-20;
 }
 
