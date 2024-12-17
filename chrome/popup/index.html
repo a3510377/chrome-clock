@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none bg-slate-500">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="一個簡單的倒數計時器" />
+    <meta name="keywords" content="倒數計時器" />
+    <link rel="stylesheet" href="/src/fonts/font.css" />
+
+    <title></title>
+  </head>
+  <body class="p-3">
+      <label
+        for="title-input"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        標題
+      </label>
+      <input
+        type="text"
+        id="title-input"
+        placeholder="輸入標題"
+        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+
+      <label
+        for="laveTime-input"
+        class="block text-sm font-medium text-gray-900 dark:text-white mt-4 mb-2"
+      >
+        倒數日期
+      </label>
+      <input
+        type="date"
+        id="laveTime-input"
+        placeholder="輸入倒數日期"
+        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+    <script type="module" src="/src/chrome/popup/main.ts"></script>
+</html>

@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/chrome-manifest",
   "manifest_version": 3,
   "name": "倒數",
   "short_name": "倒數",
@@ -8,6 +7,9 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["storage", "geolocation"],
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "chrome/popup/index.html"
+  },
   "description": "倒數計時器"
 }
