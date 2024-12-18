@@ -2,10 +2,16 @@ import './main.css';
 import './style.css';
 import './fonts/font.css';
 
-import { canvasTime, IS_CHROME } from './utils';
+import {
+  canvasTime,
+  DEFAULT_TIME,
+  DEFAULT_TITLE,
+  IChromeConfig,
+  IConfig,
+  IS_CHROME,
+} from './utils';
 
 (() => {
-  let baseTitle = '114年統一入學測驗倒數';
   const ONE_SECOND = 1000;
   const ONE_MINUTE = ONE_SECOND * 60;
   const ONE_HOUR = ONE_MINUTE * 60;
@@ -40,24 +46,26 @@ import { canvasTime, IS_CHROME } from './utils';
     const bgMaskEl = document.querySelector('#bg-mask')!;
     const settingEl = document.querySelector('#setting')!;
 
-    let countDownDate = new Date('2025-04-26T00:00:00+08:00').getTime();
+    const nowConfig: IConfig = {
+      time: DEFAULT_TIME,
+      title: DEFAULT_TITLE,
+    };
     let loop: NodeJS.Timeout | undefined;
 
     const updateInfo = () => {
-      titleEl.textContent = baseTitle;
-      inputTitleEl.value = baseTitle;
-      inputLaveTimeEl.valueAsDate = new Date(countDownDate);
+      titleEl.textContent = inputTitleEl.value = nowConfig.title;
+      inputLaveTimeEl.valueAsDate = new Date(nowConfig.time);
     };
 
     const update = () => {
-      const distance = countDownDate - new Date().getTime();
+      const distance = nowConfig.time - new Date().getTime();
 
       if (distance < 0) {
         dayEl.textContent = '00';
         hourEl.textContent = '00';
         minuteEl.textContent = '00';
         secondEl.textContent = '00';
-        document.title = `結束了 - ${baseTitle}`;
+        document.title = `結束了 - ${nowConfig.title}`;
         clearInterval(loop);
         return;
       }
@@ -71,58 +79,62 @@ import { canvasTime, IS_CHROME } from './utils';
       hourEl.textContent = String(hours).padStart(2, '0');
       minuteEl.textContent = String(minutes).padStart(2, '0');
       secondEl.textContent = String(seconds).padStart(2, '0');
-      document.title = `${days}天 - ${baseTitle}`;
+      document.title = `${days}天 - ${nowConfig.title}`;
     };
 
     const updateURL = () => {
       const queryParams = new URLSearchParams(window.location.search);
       if (IS_CHROME) {
-        chrome.storage.local.set({
-          title: baseTitle,
-          time: countDownDate.toString(),
-        });
+        chrome.storage.local.set(nowConfig);
       } else {
-        queryParams.set('title', baseTitle);
-        queryParams.set('laveTime', countDownDate.toString());
+        if (nowConfig.title !== DEFAULT_TITLE) {
+          queryParams.set('title', nowConfig.title);
+        }
+        if (nowConfig.time !== DEFAULT_TIME) {
+          queryParams.set('laveTime', new Date(nowConfig.time).toISOString());
+        }
+
         history.replaceState(null, '', '?' + queryParams.toString());
       }
       updateInfo();
     };
 
     if (IS_CHROME) {
-      const reloadConfig = (config: { title?: string; time?: string }) => {
-        countDownDate = canvasTime(countDownDate, config.time);
-        baseTitle = config.title || baseTitle;
+      const reloadConfig = ({ title, time }: IChromeConfig) => {
+        nowConfig.time = canvasTime(DEFAULT_TIME, time);
+        nowConfig.title = title || DEFAULT_TITLE;
         update();
       };
 
       chrome.storage.onChanged.addListener(({ config: { newValue } }) => {
-        reloadConfig(newValue);
+        reloadConfig(newValue || {});
         updateInfo();
       });
 
-      const { config } = await chrome.storage.local.get('config');
-      reloadConfig(config);
+      const { config } = (await chrome.storage.local.get('config')) as {
+        config?: IChromeConfig;
+      };
+      reloadConfig(config || {});
     } else {
       const searchParams = new URLSearchParams(window.location.search);
 
       if (!searchParams.has('hide')) {
         settingsEl.classList.remove('hidden');
       }
-      baseTitle = searchParams.get('title') || baseTitle;
-      countDownDate = canvasTime(countDownDate, searchParams.get('laveTime'));
+      nowConfig.time = canvasTime(DEFAULT_TIME, searchParams.get('laveTime'));
+      nowConfig.title = searchParams.get('title') || DEFAULT_TITLE;
     }
 
     updateInfo();
 
     inputTitleEl.addEventListener('input', () => {
-      baseTitle = inputTitleEl.value;
+      nowConfig.title = inputTitleEl.value;
       update();
       updateURL();
     });
 
     inputLaveTimeEl.addEventListener('input', () => {
-      countDownDate = (inputLaveTimeEl.valueAsDate || new Date()).getTime();
+      nowConfig.time = inputLaveTimeEl.valueAsDate?.getTime() || DEFAULT_TIME;
       update();
       updateURL();
     });
@@ -137,8 +149,6 @@ import { canvasTime, IS_CHROME } from './utils';
       if (settingEl.classList.toggle('hidden')) bgMaskElClassList.add('hidden');
       else bgMaskElClassList.remove('hidden');
     });
-
-    titleEl.textContent = baseTitle;
 
     const icons = document.querySelector('#bg-float-icons') as HTMLDivElement;
     icons.append(

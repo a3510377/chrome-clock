@@ -6,3 +6,13 @@ export const canvasTime = (
   time
     ? new Date(/^\d+$/.test(time.toString()) ? +time : time).getTime()
     : defaultTime;
+
+export const DEFAULT_TIME = new Date('2025-04-26T00:00:00+08:00').getTime();
+export const DEFAULT_TITLE = '114年統一入學測驗倒數';
+
+export interface IConfig {
+  time: number;
+  title: string;
+}
+
+export type IChromeConfig = Partial<IConfig>;

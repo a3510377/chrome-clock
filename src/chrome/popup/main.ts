@@ -1,5 +1,12 @@
 import '@/main.css';
-import { canvasTime, IS_CHROME } from '@/utils';
+import {
+  canvasTime,
+  DEFAULT_TIME,
+  DEFAULT_TITLE,
+  IChromeConfig,
+  IConfig,
+  IS_CHROME,
+} from '@/utils';
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!IS_CHROME) {
@@ -13,28 +20,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     '#laveTime-input'
   )! as HTMLInputElement;
 
-  const { config } = await chrome.storage.local.get('config');
-  let title: string | null = config.title;
-  let time: string | number | null = canvasTime(config.time, config.time);
-
-  const updateConfig = async () => {
-    await chrome.storage.local.set({
-      config: { title: title, time: time?.toString() },
-    });
+  const { config } = (await chrome.storage.local.get('config')) as {
+    config?: IChromeConfig;
+  };
+  const nowConfig: IConfig = {
+    time: DEFAULT_TIME,
+    title: DEFAULT_TITLE,
   };
 
-  inputTitleEl.value = title || '';
-  if (time) {
-    inputLaveTimeEl.valueAsDate = new Date(time);
-  }
+  nowConfig.time = canvasTime(DEFAULT_TIME, config?.time);
+  nowConfig.title = config?.title || DEFAULT_TITLE;
+
+  const updateConfig = async () => {
+    await chrome.storage.local.set({ config: nowConfig });
+  };
+
+  inputTitleEl.value = nowConfig.title;
+  inputLaveTimeEl.valueAsDate = new Date(nowConfig.time);
 
   inputTitleEl.addEventListener('input', () => {
-    title = inputTitleEl.value;
+    nowConfig.title = inputTitleEl.value;
     updateConfig();
   });
 
   inputLaveTimeEl.addEventListener('input', () => {
-    time = (inputLaveTimeEl.valueAsDate || new Date()).getTime();
+    nowConfig.time = inputLaveTimeEl.valueAsDate?.getTime() || DEFAULT_TIME;
     updateConfig();
   });
 });

@@ -1,11 +1,12 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import utwm from 'unplugin-tailwindcss-mangle/vite';
 import viteCompression from 'vite-plugin-compression';
 import { ViteMinifyPlugin } from 'vite-plugin-minify';
 
 export default defineConfig({
   base: process.env.BASE_URL,
-  plugins: [viteCompression(), ViteMinifyPlugin()],
+  plugins: [utwm(), viteCompression(), ViteMinifyPlugin()],
   build: {
     rollupOptions: {
       input: {
