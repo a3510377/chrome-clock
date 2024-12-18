@@ -6,7 +6,11 @@ import { ViteMinifyPlugin } from 'vite-plugin-minify';
 
 export default defineConfig({
   base: process.env.BASE_URL,
-  plugins: [utwm(), viteCompression(), ViteMinifyPlugin()],
+  plugins: [
+    utwm({ classGenerator: { classPrefix: '' } }),
+    viteCompression(),
+    ViteMinifyPlugin(),
+  ],
   build: {
     rollupOptions: {
       input: {
