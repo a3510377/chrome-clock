@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "倒數",
   "short_name": "倒數",
-  "version": "0.0.3",
-  "version_name": "0.0.3",
+  "version": "0.0.4",
+  "version_name": "0.0.4",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
